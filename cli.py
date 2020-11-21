@@ -1,6 +1,16 @@
+import argparse
 import random
 from PIL import Image
 from bn import KN
+
+
+# cli.py --nodes=256 --connections=3 --cycles=1024 --seed
+
+parser = argparse.ArgumentParser(description="Generate a random boolean network")
+parser.add_argument("--nodes", metavar="N", type=int, default=256)
+parser.add_argument("--connections", metavar="K", type=int, default=2)
+parser.add_argument("--cycles", type=int, default=256)
+parser.add_argument("--seed", type=int, default=random.randint(0, 999_999_999_999))
 
 
 def to_print(bitmap):
@@ -12,14 +22,13 @@ def to_print(bitmap):
 
 
 if __name__ == "__main__":
-    # number of nodes in the graph
-    N = 2 ** 8
-    # number of connections between each node
-    K = 3
-    # number of iterations to perform on the
-    cycles = 1024
+    args = parser.parse_args()
 
-    seed = random.randint(0, 999_999_999_999)
+    N = args.nodes
+    K = args.connections
+    seed = args.seed
+    cycles = args.cycles
+
     print(f"seed: {seed}")
     net = KN.create(N, K, seed)
 
